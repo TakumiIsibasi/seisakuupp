@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>日記追加 - 日記アプリ</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', Arial, sans-serif; 
+            background-color: #f8f9fa;
+            padding-top: 50px; 
+        }
+        h3 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            color: #495057;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        
+        .app-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 1000; 
+        }
+     
+        .error-message {
+            color: #dc3545;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="app-title" onclick="window.location.href='/';">
+        <h4>日記アプリ</h4>
+    </div>
+
+    <div class="container">
+        <h3>日記追加フォーム</h3>
+
+        <form id="diaryForm" method="post" th:action="@{/confirm}">
+            <div class="mb-3">
+                <label for="day" class="form-label">日付:</label>
+                <input type="date" class="form-control" id="day" name="day" value="" required>
+                <div class="error-message" id="dayError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="title" class="form-label">タイトル:</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="32文字まで" maxlength="32" required>
+                <div class="error-message" id="titleError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">内容:</label>
+                <textarea class="form-control" id="content" name="content" rows="4" cols="50" placeholder="1024文字まで" maxlength="1024" required></textarea>
+                <div class="error-message" id="contentError"></div>
+            </div>
+            <button type="submit" class="btn">追加</button>
+        </form>
+
+        <form action="/" method="get">
+            <button type="submit" class="btn mt-3">トップへ</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <script>
+      
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('day').value = today;
+
+      
+        document.getElementById('diaryForm').addEventListener('submit', function(event) {
+            var dayInput = document.getElementById('day');
+            var titleInput = document.getElementById('title');
+            var contentInput = document.getElementById('content');
+            var dayError = document.getElementById('dayError');
+            var titleError = document.getElementById('titleError');
+            var contentError = document.getElementById('contentError');
+            var isValid = true;
+
+           
+            if (!dayInput.checkValidity()) {
+                dayError.innerText = '日付を選択してください';
+                isValid = false;
+            } else {
+                dayError.innerText = '';
+            }
+
+            
+            if (!titleInput.checkValidity()) {
+                titleError.innerText = 'タイトルを入力してください';
+                isValid = false;
+            } else {
+                titleError.innerText = '';
+            }
+
+          
+            if (!contentInput.checkValidity()) {
+                contentError.innerText = '内容を入力してください';
+                isValid = false;
+            } else {
+                contentError.innerText = '';
+            }
+
+            if (!isValid) {
+                event.preventDefault(); 
+            }
+        });
+    </script>
+</body>
+</html>

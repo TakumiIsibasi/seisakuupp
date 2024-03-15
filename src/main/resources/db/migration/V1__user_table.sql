@@ -1,0 +1,9 @@
+CREATE TABLE `user` (
+	`userid` SERIAL NOT NULL,
+	`name` VARCHAR(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+	`password` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+	`created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+	`updeted_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+	`deleted_at` DATETIME DEFAULT NULL,
+	PRIMARY KEY (`userid`)
+) ENGINE=InnoDB;
